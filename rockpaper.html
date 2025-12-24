@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        
+        <title> Game</title>
+        <style>
+
+           
+            body{
+                background-color: rgb(45, 43, 43);
+            }
+
+            .title{
+                margin-left:150px;
+                color:white;
+                font-size:50px;
+                font-family:bold;
+
+                
+            }
+
+            .currScore
+            {
+                margin-left:250px;
+                color:white;
+                font-size:20px;
+                font-family:bold;
+                margin-top:60px;
+
+            }
+
+            .result{
+                margin-left:160px;
+                color:white;
+                font-size:20px;
+                font-family:bold;
+                margin-top:60px;
+
+            }
+
+            button{
+                background-color: blueviolet;
+                height:100px;
+                width:100px;
+                margin-right:30px;
+                margin-left:80px;
+                border-radius: 50%;
+                border:none;
+                transition:box-shadow 0.5s;
+                color:white;
+                font-size:20px;
+            }
+
+            button:active{
+                background-color: white;
+                color:blueviolet;
+            }
+
+            button:hover{
+                box-shadow:0px 0px 50px rgb(255, 255, 255);
+            }
+
+
+            .reset{
+                margin-top:70px;
+                margin-left:280px;
+            }
+
+            .complement{
+                font-size:15px;
+                margin-left:250px;
+                color:white;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div>
+        <p class="title">
+            Rock Paper Scissors
+        </p>
+       <button class="rock" onclick="play('rock')">Rock</button>
+       <button class="paper" onclick="play('paper')">Paper</button>
+       <button class="scissors" onclick="play('scissors')">Scissors</button>
+
+       <p class="currScore">
+        Win:0,lose:0,Tie:0;
+       </p>
+
+       <p class="result"></p>
+
+       <p class="complement"></p>
+
+       <button class="reset" onclick="resetScore()">reset Score</button>
+        </div>
+        
+       
+
+<script>
+
+    let score=JSON.parse(localStorage.getItem('score'));
+
+    updateScore();
+
+
+    function result(yourMove,compMove){
+        document.querySelector('.result').innerHTML=`
+        you picked ${yourMove} and computer picked ${compMove}`;
+    }
+
+
+    function updateScore(){
+        document.querySelector('.currScore').innerHTML=
+        `Win : ${score.Win},lose : ${score.loss},Tie : ${score.Tie}`;
+    }
+   
+       
+
+  function resetScore(){
+    score={Win:0,loss:0,Tie:0};
+    localStorage.setItem('score',JSON.stringify(score));
+    updateScore();
+    document.querySelector('.result').innerHTML='Your score has been reset. Let see who wins!!';
+    document.querySelector('.complement').innerHTML='Ready to start again!!!'
+  }
+  function play(user){
+  let randomN = Math.random(); 
+  let comp;
+
+  if(randomN < 1/3) comp = "rock"; 
+  else if(randomN < 2/3) comp = "paper";
+  else comp = "scissors";
+
+  if(user === comp){
+    score.Tie+=1;
+
+   updateScore();
+   result(user,comp);
+   document.querySelector('.complement').innerHTML='Great Move Try another one';
+
+  }
+  else if(
+    (user==="rock" && comp==="scissors") ||
+    (user==="paper" && comp==="rock") ||
+    (user==="scissors" && comp==="paper")
+  ){
+    score.Win+=1;
+    updateScore();
+    result(user,comp);
+    document.querySelector('.complement').innerHTML='You Win!! Congrates..';
+
+  }
+  else{
+   score.loss+=1;
+   updateScore();
+   result(user,comp);
+    document.querySelector('.complement').innerHTML='You Lost !! Better Luck Next Time';
+  }
+
+  localStorage.setItem('score',JSON.stringify(score))
+}
+
+
+</script>
+
+    </body>
+</html>
